@@ -1,0 +1,139 @@
+(function ($) {
+
+    $(document).ready(function () {
+
+        $(".read-more").click(function () {
+            //Shows the Read-more section of the about-show data.
+            $(".about-show").height("auto");
+            $(".read-more").hide();
+        });
+
+        // Validate entry form
+        $("FORM.dlslot-entry-form").validate({
+            rules: {
+                dlslot_name_first: 'required',
+                dlslot_name_last: 'required',
+                dlslot_ticket_qty: 'required',
+                dlslot_email: {
+                    required: true,
+                    email: true
+                },
+                dlslot_dob_month: {
+                    required: true,
+                    number: true,
+                    range: [1, 12]
+                },
+                dlslot_dob_day: {
+                    required: true,
+                    number: true,
+                    range: [1, 31]
+                },
+                dlslot_dob_year: {
+                    required: true,
+                    number: true,
+                    minlength: 4,
+                    birthdayCheck: ['dlslot_dob_month', 'dlslot_dob_day']
+                },
+                dlslot_country: 'required',
+                dlslot_zip: 'required',
+                dlslot_agree: 'required'
+            },
+            messages: {
+                dlslot_dob_month: {
+                    range: "Enter a month between 1 and 12."
+                },
+                dlslot_dob_day: {
+                    range: "Enter a day between 1 and 31."
+                },
+                dlslot_dob_year: {
+                    minlength: "Enter a 4 digit year."
+                }
+            },
+            groups: {
+                dob: 'dlslot_dob_month dlslot_dob_day dlslot_dob_year'
+            },
+            errorPlacement: function (error, element) {
+                error.appendTo($(element).parents('.dlslot-field'));
+            },
+            submitHandler: function (form) {
+                // Prevent double submission
+                if (!this.beenSubmitted) {
+                    this.beenSubmitted = true;
+                    form.submit();
+                }
+            }
+        });
+
+        // Validate check status
+        $("FORM.dlslot-check-status-form").validate({
+            rules: {
+                dlslot_name_last: 'required',
+                dlslot_email: {
+                    required: true,
+                    email: true
+                },
+                dlslot_dob_month: {
+                    required: true,
+                    number: true,
+                    range: [1, 12]
+                },
+                dlslot_dob_day: {
+                    required: true,
+                    number: true,
+                    range: [1, 31]
+                },
+                dlslot_dob_year: {
+                    required: true,
+                    number: true,
+                    minlength: 4,
+                    birthdayCheck: ['dlslot_dob_month', 'dlslot_dob_day']
+                }
+            },
+            messages: {
+                dlslot_dob_month: {
+                    range: "Enter a month between 1 and 12."
+                },
+                dlslot_dob_day: {
+                    range: "Enter a day between 1 and 31."
+                },
+                dlslot_dob_year: {
+                    minlength: "Enter a 4 digit year."
+                }
+            },
+            groups: {
+                dob: 'dlslot_dob_month dlslot_dob_day dlslot_dob_year'
+            },
+            errorPlacement: function (error, element) {
+                error.appendTo($(element).parents('.dlslot-field'));
+            },
+            submitHandler: function (form) {
+                // Prevent double submission
+                if (!this.beenSubmitted) {
+                    this.beenSubmitted = true;
+                    form.submit();
+                }
+            }
+        });
+
+
+        $.validator.addMethod('birthdayCheck', function(value, element, params) {
+            var mm      = parseInt($('input[name="' + params[0] + '"]').val()),
+                dd      = parseInt( $('input[name="' + params[1] + '"]').val()),
+                yyyy    = parseInt(value);
+
+            var today = new Date();
+            var birthDate = new Date(yyyy,mm - 1,dd);
+            var age = today.getFullYear() - birthDate.getFullYear();
+            var m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+
+            //If the month or days is blank or NaN, then return true to trigger the required field validation first.
+            //Other wise an empty day or month will trigger a "You must be 18 years or older."
+            return age > 17 || isNaN(mm) || isNaN(dd);
+        }, "You must be 18 years or older.");
+
+    });
+
+})(jQuery);

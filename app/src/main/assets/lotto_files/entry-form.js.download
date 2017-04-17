@@ -1,0 +1,34 @@
+/**
+ * Created by sskirch on 8/9/16.
+ * JS Functions for lottery entry forms
+ */
+
+(function ($) {
+    //run mailcheck.js on entry form email address
+    $('#dlslot_email').on('blur', function(event) {
+        $(this).mailcheck({
+            suggested: function(element, suggestion) {
+                var suggestionLabel = $("<label id='mailcheckSuggestion' class='mailcheck'></label>").text("Did you mean ");
+                var suggestionLink = $("<a class='mailcheck'></a>")
+                    .text(suggestion.full)
+                    .css('cursor', 'pointer')
+                    .click(
+                        function(){
+                            $('#dlslot_email').val(suggestion.full);
+                            suggestionLabel.remove();
+                        });
+
+                suggestionLabel.append(suggestionLink);
+                suggestionLabel.append('?');
+
+                if ($(element).parent().find('#mailcheckSuggestion').length) {
+                    //Suggestion alread exists. Replace it
+                    $(element).parent().find('#mailcheckSuggestion').replaceWith(suggestionLabel);
+                } else {
+                    //Does not exist.  Add it.
+                    suggestionLabel.appendTo($(element).parents('.dlslot-field'));
+                }
+            }
+        });
+    });
+})(jQuery);
