@@ -20,3 +20,5 @@ for (var i = 0; i < allLinks.length; i++) {
 		runHack();
 	};
 }
+
+runHack();
