@@ -9,7 +9,6 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
   private Context applicationContext;
-  public static final String IS_ONLINE_EXTRA = "is_online?";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -22,23 +21,8 @@ public class MainActivity extends AppCompatActivity {
     findViewById(R.id.fabOnline).setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        startBrowserActivity(true);
+        startActivity(new Intent(applicationContext, BrowserActivity.class));
       }
     });
-    findViewById(R.id.fabOffline).setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        startBrowserActivity(false);
-      }
-    });
-  }
-
-  /**
-   * Starts the browser with the actual hamilton URL or nah
-   */
-  private void startBrowserActivity(boolean isOnline) {
-    Intent intent = new Intent(applicationContext, BrowserActivity.class);
-    intent.putExtra(IS_ONLINE_EXTRA, isOnline);
-    startActivity(intent);
   }
 }
