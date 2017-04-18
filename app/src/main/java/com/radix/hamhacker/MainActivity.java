@@ -24,5 +24,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(applicationContext, BrowserActivity.class));
       }
     });
+
+    BrowserActivity.clearAllCookieData();
   }
 }

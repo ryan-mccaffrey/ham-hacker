@@ -3,12 +3,16 @@ package com.radix.hamhacker;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.webkit.ConsoleMessage;
+import android.webkit.CookieManager;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.radix.hamhacker.models.JavascriptGenerator;
 
@@ -23,6 +27,29 @@ public class BrowserActivity extends AppCompatActivity {
     setContentView(R.layout.activity_browser);
 
     this.webView = (WebView) findViewById(R.id.webviewBrowser);
+
+    findViewById(R.id.buttonBack).setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        webView.goBack();
+      }
+    });
+    findViewById(R.id.buttonForward).setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        webView.goForward();
+      }
+    });
+    findViewById(R.id.buttonApplyHack).setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        loadJs();
+      }
+    });
+
+    // Clear all the data
+    webView.clearCache(true);
+    clearAllCookieData();
 
     // set the client
     webView.setWebViewClient(new WebViewClient() {
@@ -51,9 +78,23 @@ public class BrowserActivity extends AppCompatActivity {
     webView.loadUrl("https://lottery.broadwaydirect.com/show/hamilton/");
 
     // load the javascript
+    loadJs();
+  }
+
+  public static void clearAllCookieData() {
+    CookieManager.getInstance().removeAllCookies(new ValueCallback<Boolean>() {
+      @Override
+      public void onReceiveValue(Boolean aBoolean) {
+        CookieManager.getInstance().flush();
+      }
+    });
+  }
+
+  private void loadJs() {
     String generatedJs = new JavascriptGenerator(this.getApplicationContext()).get();
     Log.d(TAG, "Using generated js:\n" + generatedJs);
     webView.loadUrl(generatedJs);
+    Toast.makeText(this, "Applied Js", Toast.LENGTH_SHORT).show();
   }
 
   private void setWebSettings(WebSettings webSettings) {
