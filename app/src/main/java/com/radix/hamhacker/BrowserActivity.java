@@ -80,6 +80,9 @@ public class BrowserActivity extends AppCompatActivity {
     setWebSettings(webView.getSettings());
 
     openLottery();
+
+    // Scroll a little to where the button is
+    webView.scrollBy(0, 1000);
   }
 
   /**

@@ -37,16 +37,16 @@ public class SortedIndexMap {
   }
 
   /**
-   * Gets the youngest index from storage. Also sets the age of the index to now.
+   * Gets the oldest index from storage. Also sets the age of the index to now.
    */
-  public int getYoungestIndex() {
+  public int getOldestIndex() {
     // Sort the map
     List<Map.Entry<Integer, Long>> sortedEntries = getEntriesSortedByValues(indexMapping);
-    int youngestIndex = sortedEntries.get(0).getKey();
+    int oldestIndex = sortedEntries.get(0).getKey();
 
     // Reset the age of the entry
-    writeAgeToEntryInMap(youngestIndex, getTimestampValue());
-    return youngestIndex;
+    writeAgeToEntryInMap(oldestIndex, getTimestampValue());
+    return oldestIndex;
   }
 
   private void writeAgeToEntryInMap(int index, long age) {
@@ -106,7 +106,6 @@ public class SortedIndexMap {
             return entry1.getValue().compareTo(entry2.getValue());
           }
         });
-
     return sortedEntries;
   }
 }

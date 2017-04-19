@@ -40,7 +40,7 @@ public class DummyPersonalData implements IPersonalDataModel {
 
     // Get the least recently used index
     SortedIndexMap sortedIndexMap = new SortedIndexMap(context, numEntries);
-    index = sortedIndexMap.getYoungestIndex();
+    index = sortedIndexMap.getOldestIndex();
   }
 
   @Override

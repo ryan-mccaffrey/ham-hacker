@@ -37,17 +37,17 @@ public class SortedIndexMapTest {
   }
 
   @Test
-  public void testGetYoungestEntry() {
+  public void testGetoldestEntry() {
     int numIndices = 3;
 
     SortedIndexMap sortedIndexMap = new SortedIndexMap(InstrumentationRegistry.getContext(), numIndices);
-    int youngest = sortedIndexMap.getYoungestIndex();
+    int oldest = sortedIndexMap.getOldestIndex();
 
-    // that youngest index should be the only non-zero value in the map
+    // that oldest index should be the only non-zero value in the map
     Map<Integer, Long> indexMapping = sortedIndexMap.indexMapping;
     for (int key : indexMapping.keySet()) {
       long value = indexMapping.get(key);
-      if (key == youngest) {
+      if (key == oldest) {
         assertTrue(value > 0);
       } else {
         assertEquals(key, value);
@@ -60,16 +60,16 @@ public class SortedIndexMapTest {
     int numIndices = 3;
 
     SortedIndexMap sortedIndexMap = new SortedIndexMap(InstrumentationRegistry.getContext(), numIndices);
-    int youngest = sortedIndexMap.getYoungestIndex();
+    int oldest = sortedIndexMap.getOldestIndex();
 
     // recreate the map
     SortedIndexMap sortedIndexMapFromStorage = new SortedIndexMap(InstrumentationRegistry.getContext(), numIndices);
 
-    // that youngest index should be the only non-zero value in the map
+    // that oldest index should be the only non-zero value in the map
     Map<Integer, Long> indexMapping = sortedIndexMapFromStorage.indexMapping;
     for (int key : indexMapping.keySet()) {
       long value = indexMapping.get(key);
-      if (key == youngest) {
+      if (key == oldest) {
         assertTrue(value > 0);
       } else {
         assertEquals(key, value);
@@ -83,7 +83,7 @@ public class SortedIndexMapTest {
     SortedIndexMap sortedIndexMap = new SortedIndexMap(InstrumentationRegistry.getContext(), numIndices);
 
     for (int i = 0; i < numIndices; i++) {
-      assertEquals("0 is first, then 1, then 2, etc.", i, sortedIndexMap.getYoungestIndex());
+      assertEquals("0 is first, then 1, then 2, etc.", i, sortedIndexMap.getOldestIndex());
     }
   }
 }
