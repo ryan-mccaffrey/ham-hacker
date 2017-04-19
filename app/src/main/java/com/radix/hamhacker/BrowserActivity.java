@@ -39,16 +39,12 @@ public class BrowserActivity extends AppCompatActivity {
         webView.goForward();
       }
     });
-    findViewById(R.id.buttonApplyHack).setOnClickListener(new View.OnClickListener() {
+    findViewById(R.id.buttonReload).setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        loadJs();
+        openLottery();
       }
     });
-
-    // Clear all the data
-    webView.clearCache(true);
-    clearAllCookieData();
 
     // set the client
     webView.setWebViewClient(new WebViewClient() {
@@ -61,7 +57,11 @@ public class BrowserActivity extends AppCompatActivity {
       @Override
       public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
-        loadJs();
+        if (url.contains("enter-lottery")) {
+          loadJs();
+        } else {
+          Log.d(TAG, "Url isn't the lottery page, not loading js. Url: " + url);
+        }
       }
     });
 
@@ -74,11 +74,21 @@ public class BrowserActivity extends AppCompatActivity {
             + cm.sourceId());
         return true;
       }
-
     });
 
     // set the settings
     setWebSettings(webView.getSettings());
+
+    openLottery();
+  }
+
+  /**
+   * Opens the main lottery URL
+   */
+  private void openLottery() {
+    // Clear all the data
+    webView.clearCache(true);
+    clearAllCookieData();
 
     // load the url
     webView.loadUrl("https://lottery.broadwaydirect.com/show/hamilton/");

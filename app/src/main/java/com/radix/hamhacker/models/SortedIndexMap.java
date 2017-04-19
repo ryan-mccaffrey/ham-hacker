@@ -85,7 +85,8 @@ public class SortedIndexMap {
     SharedPreferences.Editor editor = prefsMapping.edit();
     editor.clear();
     for (int i = 0; i < numIndices; i++) {
-      editor.putLong(Integer.toString(i), 0L);
+      // Write the index as the value. This way, 0 is first, then 1, etc.
+      editor.putLong(Integer.toString(i), i);
     }
 
     editor.apply();

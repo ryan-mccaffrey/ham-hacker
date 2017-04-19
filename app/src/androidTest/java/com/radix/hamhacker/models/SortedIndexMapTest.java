@@ -50,7 +50,7 @@ public class SortedIndexMapTest {
       if (key == youngest) {
         assertTrue(value > 0);
       } else {
-        assertEquals(0, value);
+        assertEquals(key, value);
       }
     }
   }
@@ -72,8 +72,18 @@ public class SortedIndexMapTest {
       if (key == youngest) {
         assertTrue(value > 0);
       } else {
-        assertEquals(0, value);
+        assertEquals(key, value);
       }
+    }
+  }
+
+  @Test
+  public void testSequentialReads() {
+    int numIndices = 16;
+    SortedIndexMap sortedIndexMap = new SortedIndexMap(InstrumentationRegistry.getContext(), numIndices);
+
+    for (int i = 0; i < numIndices; i++) {
+      assertEquals("0 is first, then 1, then 2, etc.", i, sortedIndexMap.getYoungestIndex());
     }
   }
 }
