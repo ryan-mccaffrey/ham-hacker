@@ -69,7 +69,7 @@ public class BrowserActivity extends AppCompatActivity {
     webView.setWebChromeClient(new WebChromeClient() {
       @Override
       public boolean onConsoleMessage(ConsoleMessage cm) {
-        Log.d(TAG, "CONSOLE LOG:" + cm.message() + " -- From line "
+        Log.d(TAG, "CONSOLE LOG: " + cm.message() + " -- From line "
             + cm.lineNumber() + " of "
             + cm.sourceId());
         return true;
