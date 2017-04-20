@@ -19,6 +19,7 @@ public class BrowserActivity extends AppCompatActivity {
   private static final String TAG = BrowserActivity.class.toString();
 
   private WebView webView;
+  private boolean inSession = false;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +58,9 @@ public class BrowserActivity extends AppCompatActivity {
       @Override
       public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
-        if (url.contains("enter-lottery")) {
+        if (url.contains("enter-lottery") && !inSession) {
           loadJs();
+          inSession =  true;
         } else {
           Log.d(TAG, "Url isn't the lottery page, not loading js. Url: " + url);
         }
@@ -80,21 +82,22 @@ public class BrowserActivity extends AppCompatActivity {
     setWebSettings(webView.getSettings());
 
     openLottery();
-
-    // Scroll a little to where the button is
-    webView.scrollBy(0, 1000);
   }
 
   /**
    * Opens the main lottery URL
    */
   private void openLottery() {
+    inSession = false;
     // Clear all the data
     webView.clearCache(true);
     clearAllCookieData();
 
     // load the url
     webView.loadUrl("https://lottery.broadwaydirect.com/show/hamilton/");
+
+    // Scroll a little to where the button is
+    webView.scrollBy(0, 1000);
   }
 
   public static void clearAllCookieData() {
