@@ -12,7 +12,6 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import com.radix.hamhacker.models.JavascriptGenerator;
 
@@ -40,16 +39,12 @@ public class BrowserActivity extends AppCompatActivity {
         webView.goForward();
       }
     });
-    findViewById(R.id.buttonApplyHack).setOnClickListener(new View.OnClickListener() {
+    findViewById(R.id.buttonReload).setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        loadJs();
+        openLottery();
       }
     });
-
-    // Clear all the data
-    webView.clearCache(true);
-    clearAllCookieData();
 
     // set the client
     webView.setWebViewClient(new WebViewClient() {
@@ -58,13 +53,23 @@ public class BrowserActivity extends AppCompatActivity {
         webView.loadUrl(request.getUrl().toString());
         return true;
       }
+
+      @Override
+      public void onPageFinished(WebView view, String url) {
+        super.onPageFinished(view, url);
+        if (url.contains("enter-lottery")) {
+          loadJs();
+        } else {
+          Log.d(TAG, "Url isn't the lottery page, not loading js. Url: " + url);
+        }
+      }
     });
 
     // and the chrome
     webView.setWebChromeClient(new WebChromeClient() {
       @Override
       public boolean onConsoleMessage(ConsoleMessage cm) {
-        Log.d(TAG, "CONSOLE LOG: \n" + cm.message() + " -- From line "
+        Log.d(TAG, "CONSOLE LOG: " + cm.message() + " -- From line "
             + cm.lineNumber() + " of "
             + cm.sourceId());
         return true;
@@ -74,11 +79,22 @@ public class BrowserActivity extends AppCompatActivity {
     // set the settings
     setWebSettings(webView.getSettings());
 
+    openLottery();
+
+    // Scroll a little to where the button is
+    webView.scrollBy(0, 1000);
+  }
+
+  /**
+   * Opens the main lottery URL
+   */
+  private void openLottery() {
+    // Clear all the data
+    webView.clearCache(true);
+    clearAllCookieData();
+
     // load the url
     webView.loadUrl("https://lottery.broadwaydirect.com/show/hamilton/");
-
-    // load the javascript
-    loadJs();
   }
 
   public static void clearAllCookieData() {
@@ -92,9 +108,8 @@ public class BrowserActivity extends AppCompatActivity {
 
   private void loadJs() {
     String generatedJs = new JavascriptGenerator(this.getApplicationContext()).get();
-    Log.d(TAG, "Using generated js:\n" + generatedJs);
+    Log.v(TAG, "Using generated js:\n" + generatedJs);
     webView.loadUrl(generatedJs);
-    Toast.makeText(this, "Applied Js", Toast.LENGTH_SHORT).show();
   }
 
   private void setWebSettings(WebSettings webSettings) {

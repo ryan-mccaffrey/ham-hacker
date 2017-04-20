@@ -21,7 +21,7 @@ public class JavascriptGenerator {
   }
 
   public String get() {
-    return "javascript:" + generateScriptBody(new DummyPersonalData());
+    return "javascript:" + generateScriptBody(new DummyPersonalData(context));
   }
 
   private String generateScriptBody(IPersonalDataModel dataModel) {

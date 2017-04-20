@@ -11,14 +11,6 @@ function runHack() {
 	document.getElementById('dlslot_ticket_qty').value = 2;
 }
 
-allLinks = document.getElementsByClassName("enter-button enter-lottery-link");
-console.log("Matching click targets: " + allLinks.length);
-
-for (var i = 0; i < allLinks.length; i++) {
-	obj = allLinks[i];
-	obj.onclick = function() {
-		runHack();
-	};
+if (document.getElementById('dlslot_name_first') != null) {
+    runHack();
 }
-
-runHack();

@@ -26,5 +26,8 @@ public class MainActivity extends AppCompatActivity {
     });
 
     BrowserActivity.clearAllCookieData();
+
+    // Really no reason to even be on the splash page at all
+    startActivity(new Intent(applicationContext, BrowserActivity.class));
   }
 }

@@ -1,6 +1,6 @@
 package com.radix.hamhacker.models;
 
-import java.util.Random;
+import android.content.Context;
 
 /**
  *
@@ -35,9 +35,12 @@ public class DummyPersonalData implements IPersonalDataModel {
 
   private final int index;
 
-  public DummyPersonalData() {
+  public DummyPersonalData(Context context) {
     int numEntries = EMAILS.length;
-    index = new Random().nextInt(numEntries);
+
+    // Get the least recently used index
+    SortedIndexMap sortedIndexMap = new SortedIndexMap(context, numEntries);
+    index = sortedIndexMap.getOldestIndex();
   }
 
   @Override
