@@ -17,6 +17,7 @@ import com.radix.hamhacker.models.JavascriptGenerator;
 
 public class BrowserActivity extends AppCompatActivity {
   private static final String TAG = BrowserActivity.class.toString();
+  public static final String URL_MAIN_PAGE = "https://lottery.broadwaydirect.com/show/hamilton/";
 
   private WebView webView;
   private boolean inSession = false;
@@ -58,9 +59,18 @@ public class BrowserActivity extends AppCompatActivity {
       @Override
       public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
-        if (url.contains("enter-lottery") && !inSession) {
+        Log.d(TAG, "url: " + url);
+        if (url.contains("enter-lottery/?lottery=") && !inSession) {
           loadJs();
-          inSession =  true;
+          inSession = true;
+          webView.scrollBy(0, 1000);
+        } else if (url.equals(URL_MAIN_PAGE)) {
+          inSession = false;
+          // Scroll a little to where the button is
+          webView.scrollBy(0, 1000);
+        } else if (url.contains("enter-lottery/success") && inSession) {
+          Log.d(TAG, "On success page. Going back");
+          openLottery();
         } else {
           Log.d(TAG, "Url isn't the lottery page, not loading js. Url: " + url);
         }
@@ -94,10 +104,7 @@ public class BrowserActivity extends AppCompatActivity {
     clearAllCookieData();
 
     // load the url
-    webView.loadUrl("https://lottery.broadwaydirect.com/show/hamilton/");
-
-    // Scroll a little to where the button is
-    webView.scrollBy(0, 1000);
+    webView.loadUrl(URL_MAIN_PAGE);
   }
 
   public static void clearAllCookieData() {

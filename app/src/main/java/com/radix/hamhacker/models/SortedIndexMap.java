@@ -4,13 +4,16 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.VisibleForTesting;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Maintains a mapping of indices by last time accessed. Writes back all changes to disk immediately.
@@ -23,6 +26,7 @@ public class SortedIndexMap {
   @VisibleForTesting
   final Map<Integer, Long> indexMapping;
   private final SharedPreferences prefsMapping;
+  private final Context mContext;
 
   public SortedIndexMap(Context context, int numIndices) {
     this.prefsMapping = context.getSharedPreferences(INDEX_PREFS_FILE_NAME, Context.MODE_PRIVATE);
@@ -34,6 +38,24 @@ public class SortedIndexMap {
     }
 
     indexMapping = getMappingFromStorage();
+    mContext = context.getApplicationContext();
+  }
+
+  private int getNumEntriesYoungerThanOneDay() {
+    long currentTime = getTimestampValue();
+    int numEntries = 0;
+    for (long timestamp : indexMapping.values()) {
+      // get the diff
+      long timeDifference = currentTime - timestamp;
+      long numDays = TimeUnit.DAYS.convert(timeDifference, TimeUnit.MILLISECONDS);
+
+      if (numDays > 0) {
+        numEntries++;
+      }
+    }
+
+    Log.d(TAG, "There are " + numEntries + " older than 1 day");
+    return numEntries;
   }
 
   /**
@@ -46,6 +68,8 @@ public class SortedIndexMap {
 
     // Reset the age of the entry
     writeAgeToEntryInMap(oldestIndex, getTimestampValue());
+
+    showToast(String.format(Locale.ENGLISH, "There are %d submissions left after this one!", getNumEntriesYoungerThanOneDay()));
     return oldestIndex;
   }
 
@@ -107,5 +131,9 @@ public class SortedIndexMap {
           }
         });
     return sortedEntries;
+  }
+
+  private void showToast(String msg) {
+    Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
   }
 }
