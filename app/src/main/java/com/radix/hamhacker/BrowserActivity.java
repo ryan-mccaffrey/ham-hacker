@@ -129,4 +129,13 @@ public class BrowserActivity extends AppCompatActivity {
     webSettings.setAllowUniversalAccessFromFileURLs(true);
     webSettings.setAllowFileAccessFromFileURLs(true);
   }
+
+  @Override
+  public void onBackPressed() {
+    if (webView.canGoBack()) {
+      webView.goBack();
+    } else {
+      super.onBackPressed();
+    }
+  }
 }
