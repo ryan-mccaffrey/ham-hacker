@@ -15,13 +15,16 @@ public class JavascriptGenerator {
   private static final String TAG = JavascriptGenerator.class.toString();
 
   private final Context context;
+  private DummyPersonalData mDataModel;
 
   public JavascriptGenerator(Context context) {
     this.context = context;
+    mDataModel = new DummyPersonalData(context);
   }
 
   public String get() {
-    return "javascript:" + generateScriptBody(new DummyPersonalData(context));
+    mDataModel.incrementModel();
+    return "javascript:" + generateScriptBody(mDataModel);
   }
 
   private String generateScriptBody(IPersonalDataModel dataModel) {

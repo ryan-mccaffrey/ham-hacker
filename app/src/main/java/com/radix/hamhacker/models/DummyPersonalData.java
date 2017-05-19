@@ -13,17 +13,21 @@ import java.util.List;
  *
  */
 public class DummyPersonalData implements IPersonalDataModel {
-  private final int index;
+  private int index;
   private final List<String> lastNames;
+  private final SortedIndexMap mSortedIndexMap;
 
   public DummyPersonalData(Context context) {
     lastNames = getLastNamesFromAssets(context);
     int numEntries = lastNames.size();
 
     // Get the least recently used index
-    SortedIndexMap sortedIndexMap = new SortedIndexMap(context, numEntries);
-    index = sortedIndexMap.getOldestIndex();
+    mSortedIndexMap = new SortedIndexMap(context, numEntries);
+  }
 
+  @Override
+  public void incrementModel() {
+    index = mSortedIndexMap.getOldestIndex();
   }
 
   @Override

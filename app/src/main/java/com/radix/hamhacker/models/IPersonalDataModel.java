@@ -13,4 +13,6 @@ public interface IPersonalDataModel {
 
   String getEmail();
   String getZip();
+
+  void incrementModel();
 }

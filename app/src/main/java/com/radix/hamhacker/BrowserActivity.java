@@ -21,12 +21,14 @@ public class BrowserActivity extends AppCompatActivity {
 
   private WebView webView;
   private boolean inSession = false;
+  private JavascriptGenerator mJavascriptGenerator;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_browser);
 
+    mJavascriptGenerator = new JavascriptGenerator(this.getApplicationContext());
     this.webView = (WebView) findViewById(R.id.webviewBrowser);
 
     findViewById(R.id.buttonBack).setOnClickListener(new View.OnClickListener() {
@@ -41,6 +43,7 @@ public class BrowserActivity extends AppCompatActivity {
         webView.goForward();
       }
     });
+
     findViewById(R.id.buttonReload).setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -118,7 +121,7 @@ public class BrowserActivity extends AppCompatActivity {
   }
 
   private void loadJs() {
-    String generatedJs = new JavascriptGenerator(this.getApplicationContext()).get();
+    String generatedJs = mJavascriptGenerator.get();
     Log.v(TAG, "Using generated js:\n" + generatedJs);
     webView.loadUrl(generatedJs);
   }
