@@ -47,9 +47,9 @@ public class SortedIndexMap {
     for (long timestamp : indexMapping.values()) {
       // get the diff
       long timeDifference = currentTime - timestamp;
-      long numDays = TimeUnit.DAYS.convert(timeDifference, TimeUnit.MILLISECONDS);
+      long numHours = TimeUnit.HOURS.convert(timeDifference, TimeUnit.MILLISECONDS);
 
-      if (numDays > 0) {
+      if (numHours > 12) {
         numEntries++;
       }
     }

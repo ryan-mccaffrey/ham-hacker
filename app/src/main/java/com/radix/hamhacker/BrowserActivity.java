@@ -44,6 +44,7 @@ public class BrowserActivity extends AppCompatActivity {
     findViewById(R.id.buttonReload).setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
+        webView.clearHistory();
         openLottery();
       }
     });
