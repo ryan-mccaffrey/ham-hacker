@@ -1,11 +1,8 @@
 package com.radix.hamhacker;
 
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.ConsoleMessage;
 import android.webkit.CookieManager;
@@ -71,9 +68,6 @@ public class BrowserActivity extends AppCompatActivity {
           loadJs();
           inSession = true;
           webView.scrollBy(0, 1000);
-
-          // Click on the captcha lol
-          webView.dispatchTouchEvent(getBottomOfScreenClick());
         } else if (url.equals(URL_MAIN_PAGE)) {
           inSession = false;
           // Scroll a little to where the button is
@@ -102,27 +96,6 @@ public class BrowserActivity extends AppCompatActivity {
     setWebSettings(webView.getSettings());
 
     openLottery();
-  }
-
-  private MotionEvent getBottomOfScreenClick() {
-    DisplayMetrics metrics;
-    int width = 0, height = 0;
-
-    metrics = new DisplayMetrics();
-    getWindowManager().getDefaultDisplay().getMetrics(metrics);
-    width = metrics.widthPixels;
-    height = metrics.heightPixels;
-
-    int metaState = 0;
-
-    return MotionEvent.obtain(
-        SystemClock.uptimeMillis(),
-        SystemClock.uptimeMillis() + 100,
-        MotionEvent.ACTION_UP,
-        width * 0.48f,
-        height * 0.98f,
-        metaState
-    );
   }
 
   /**
