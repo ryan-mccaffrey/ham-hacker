@@ -20,7 +20,7 @@ public class BrowserActivity extends AppCompatActivity {
   private static final String URL_MAIN_PAGE = "https://lottery.broadwaydirect.com/show/hamilton/";
   private static final String ENTER_LOTTERY_URL_MATCH = "enter-lottery/?lottery=";
   private static final String POST_LOTTERY_SUCCESS_URL_MATCH = "enter-lottery/success";
-  private static final String POST_LOTTERY_CONFIRM_EMAIL_URL_MATCH = "?action=validate";
+  private static final String POST_LOTTERY_CONFIRM_EMAIL_URL_MATCH = "enter-lottery/check-your-email";
 
   private WebView mWebView;
   private boolean inSession = false;
@@ -103,6 +103,7 @@ public class BrowserActivity extends AppCompatActivity {
   private void onEnterPostSubmissionPage() {
     Log.d(TAG, "On success or email confirmation page. Going back");
     openLottery();
+    inSession = false;
   }
 
   private void onEnterMainPage() {
