@@ -9,17 +9,15 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- */
 public class DummyPersonalData implements IPersonalDataModel {
   private int index;
-  private final List<String> lastNames;
+  private final List<String> mAllNames;
   private final SortedIndexMap mSortedIndexMap;
+  private static final String NAME_DELIMITER = "|";
 
   public DummyPersonalData(Context context) {
-    lastNames = getLastNamesFromAssets(context);
-    int numEntries = lastNames.size();
+    mAllNames = getLastNamesFromAssets(context);
+    int numEntries = mAllNames.size();
 
     // Get the least recently used index
     mSortedIndexMap = new SortedIndexMap(context, numEntries);
@@ -37,12 +35,18 @@ public class DummyPersonalData implements IPersonalDataModel {
 
   @Override
   public String getLastName() {
-    return lastNames.get(index);
+    final String name = mAllNames.get(index);
+    int delimiterPosition = name.indexOf(NAME_DELIMITER);
+
+    return name.substring(delimiterPosition + 1, name.length()).trim();
   }
 
   @Override
   public String getFirstName() {
-    return "Julian";
+    final String name = mAllNames.get(index);
+    int delimiterPosition = name.indexOf(NAME_DELIMITER);
+
+    return name.substring(0, delimiterPosition).trim();
   }
 
   @Override

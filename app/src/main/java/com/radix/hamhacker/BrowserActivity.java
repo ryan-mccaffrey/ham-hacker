@@ -17,7 +17,10 @@ import com.radix.hamhacker.models.JavascriptGenerator;
 
 public class BrowserActivity extends AppCompatActivity {
   private static final String TAG = BrowserActivity.class.toString();
-  public static final String URL_MAIN_PAGE = "https://lottery.broadwaydirect.com/show/hamilton/";
+  private static final String URL_MAIN_PAGE = "https://lottery.broadwaydirect.com/show/hamilton/";
+  private static final String ENTER_LOTTERY_URL_MATCH = "enter-lottery/?lottery=";
+  private static final String POST_LOTTERY_SUCCESS_URL_MATCH = "enter-lottery/success";
+  private static final String POST_LOTTERY_CONFIRM_EMAIL_URL_MATCH = "?action=validate";
 
   private WebView webView;
   private boolean inSession = false;
@@ -64,7 +67,7 @@ public class BrowserActivity extends AppCompatActivity {
       public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
         Log.d(TAG, "url: " + url);
-        if (url.contains("enter-lottery/?lottery=") && !inSession) {
+        if (url.contains(ENTER_LOTTERY_URL_MATCH) && !inSession) {
           loadJs();
           inSession = true;
           webView.scrollBy(0, 1000);
@@ -72,8 +75,8 @@ public class BrowserActivity extends AppCompatActivity {
           inSession = false;
           // Scroll a little to where the button is
           webView.scrollBy(0, 1000);
-        } else if (url.contains("enter-lottery/success") && inSession) {
-          Log.d(TAG, "On success page. Going back");
+        } else if ((url.contains(POST_LOTTERY_SUCCESS_URL_MATCH) || url.contains(POST_LOTTERY_CONFIRM_EMAIL_URL_MATCH)) && inSession) {
+          Log.d(TAG, "On success or email confirmation page. Going back");
           openLottery();
         } else {
           Log.d(TAG, "Url isn't the lottery page, not loading js. Url: " + url);

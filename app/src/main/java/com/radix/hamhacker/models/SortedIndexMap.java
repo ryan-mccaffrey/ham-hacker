@@ -71,7 +71,7 @@ public class SortedIndexMap {
 
     final int numEntriesYoungerThanOneDay = getNumEntriesYoungerThanOneDay();
     int entriesDoneToday = numIndices - numEntriesYoungerThanOneDay;
-//    showToast(String.format(Locale.ENGLISH, "There are %d submissions left after this one!", numEntriesYoungerThanOneDay));
+    showToast(String.format(Locale.ENGLISH, "There are %d submissions left after this one!", numEntriesYoungerThanOneDay));
     showToast(String.format(Locale.ENGLISH, "%d submissions done today!", entriesDoneToday));
     return oldestIndex;
   }
