@@ -55,7 +55,7 @@ public class BrowserActivity extends AppCompatActivity {
       @Override
       public void onClick(View view) {
         mWebView.clearHistory();
-        openLottery();
+        openMainPage();
       }
     });
 
@@ -97,12 +97,12 @@ public class BrowserActivity extends AppCompatActivity {
     // set the settings
     setWebSettings(mWebView.getSettings());
 
-    openLottery();
+    openMainPage();
   }
 
   private void onEnterPostSubmissionPage() {
     Log.d(TAG, "On success or email confirmation page. Going back");
-    openLottery();
+    openLotteryEntry();
     inSession = false;
   }
 
@@ -117,14 +117,18 @@ public class BrowserActivity extends AppCompatActivity {
   private void onEnterLotteryPage() {
     loadJs();
     inSession = true;
-    mWebView.scrollBy(0, 1000);
+    mWebView.scrollBy(0, 2000);
     mWebViewSettings.setBlockNetworkImage(false);
+  }
+
+  private void openLotteryEntry() {
+    mWebView.loadUrl("https://lottery.broadwaydirect.com/enter-lottery/?lottery=259023&window=popup");
   }
 
   /**
    * Opens the main lottery URL
    */
-  private void openLottery() {
+  private void openMainPage() {
     inSession = false;
 //    mWebView.clearCache(true);
     clearAllCookieData();
